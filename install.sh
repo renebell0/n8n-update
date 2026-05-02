@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REPO_URL="https://raw.githubusercontent.com/TU-USUARIO/n8n-update/main"
+REPO_URL="https://raw.githubusercontent.com/renebell0/n8n-update/main"
 TARGET_SCRIPT="update-n8n.sh"
 CURRENT_DIR="$(pwd)"
 

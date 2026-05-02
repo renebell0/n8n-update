@@ -32,12 +32,12 @@ npx n8n-update
 
 ### Option B: Using PowerShell (Windows Only)
 ```powershell
-irm https://raw.githubusercontent.com/TU-USUARIO/n8n-update/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/renebell0/n8n-update/main/install.ps1 | iex
 ```
 
 ### Option C: Using Bash (Linux/macOS Only)
 ```bash
-curl -fsSL https://raw.githubusercontent.com/TU-USUARIO/n8n-update/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/renebell0/n8n-update/main/install.sh | bash
 ```
 
 ## How it works

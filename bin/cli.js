@@ -3,7 +3,7 @@
 const { execSync } = require('child_process');
 const os = require('os');
 
-const REPO_USER = 'TU-USUARIO'; // CHANGE THIS AFTER CREATING REPO
+const REPO_USER = 'renebell0'; // CHANGE THIS AFTER CREATING REPO
 const RAW_URL = `https://raw.githubusercontent.com/${REPO_USER}/n8n-update/main`;
 
 console.log('--- n8n-update: Cross-Platform Installer ---');

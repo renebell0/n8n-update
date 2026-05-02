@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TU-USUARIO/n8n-update.git"
+    "url": "git+https://github.com/renebell0/n8n-update.git"
   },
   "keywords": [
     "n8n",
@@ -26,9 +26,9 @@
   "author": "VIRS",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/TU-USUARIO/n8n-update/issues"
+    "url": "https://github.com/renebell0/n8n-update/issues"
   },
-  "homepage": "https://github.com/TU-USUARIO/n8n-update#readme",
+  "homepage": "https://github.com/renebell0/n8n-update#readme",
   "engines": {
     "node": ">=14"
   }
