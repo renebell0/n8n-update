@@ -1,0 +1,35 @@
+{
+  "name": "n8n-update",
+  "version": "1.0.0",
+  "description": "Professional cross-platform n8n Docker auto-updater with rolling backups and cleanup.",
+  "main": "bin/cli.js",
+  "bin": {
+    "n8n-update": "bin/cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TU-USUARIO/n8n-update.git"
+  },
+  "keywords": [
+    "n8n",
+    "docker",
+    "update",
+    "backup",
+    "automation",
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "author": "VIRS",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TU-USUARIO/n8n-update/issues"
+  },
+  "homepage": "https://github.com/TU-USUARIO/n8n-update#readme",
+  "engines": {
+    "node": ">=14"
+  }
+}
