@@ -22,6 +22,22 @@ function Write-Log {
     Add-Content -Path $logFile -Value "[$stamp] $Message"
 }
 
+# Helper to run native commands that write to stderr (like docker) 
+# without triggering $ErrorActionPreference = "Stop" on non-errors.
+function Invoke-NativeCommand {
+    param([scriptblock]$Command)
+    $oldAction = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    try {
+        & $Command
+        if ($LASTEXITCODE -ne 0) {
+            throw "Native command failed with exit code $LASTEXITCODE"
+        }
+    } finally {
+        $ErrorActionPreference = $oldAction
+    }
+}
+
 try {
     # Path validation
     if (-not (Test-Path $dockerExe)) {
@@ -44,11 +60,12 @@ try {
     
     # Try to export, but don't fail the whole update if export fails (e.g. n8n is down)
     try {
-        & $dockerExe exec n8n n8n export:workflow --all --output=/home/node/last_backup.json 2>$null
-        & $dockerExe cp "n8n:/home/node/last_backup.json" "$backupFile" 2>$null
+        Write-Host "Exporting workflows..."
+        Invoke-NativeCommand { & $dockerExe exec n8n n8n export:workflow --all --output=/home/node/last_backup.json 2>$null }
+        Invoke-NativeCommand { & $dockerExe cp "n8n:/home/node/last_backup.json" "$backupFile" 2>$null }
         Write-Log "Backup created: $backupFile"
     } catch {
-        Write-Log "Warning: Failed to create workflow backup. Proceeding with update anyway."
+        Write-Log "Warning: Failed to create workflow backup. Proceeding with update anyway. Error: $($_.Exception.Message)"
     }
 
     # 2. BACKUP CLEANUP: Retention 7 days
@@ -57,16 +74,14 @@ try {
 
     # 3. UPDATE: Pull image
     Write-Log "Pulling latest n8n image..."
-    & $dockerExe compose -f $composeFile pull n8n 2>$null
-    if ($LASTEXITCODE -ne 0) { throw "Failed to pull n8n image. Exit code: $LASTEXITCODE" }
+    Invoke-NativeCommand { & $dockerExe compose -f $composeFile pull n8n 2>$null }
 
     # 4. RESTART: Recreate container if image changed
     Write-Log "Restarting n8n container if needed..."
-    & $dockerExe compose -f $composeFile up -d n8n 2>$null
-    if ($LASTEXITCODE -ne 0) { throw "Failed to restart n8n container. Exit code: $LASTEXITCODE" }
+    Invoke-NativeCommand { & $dockerExe compose -f $composeFile up -d n8n 2>$null }
 
     # 5. MAINTENANCE: Prune images
-    & $dockerExe image prune -f 2>$null
+    Invoke-NativeCommand { & $dockerExe image prune -f 2>$null }
     Write-Log "Old docker images pruned."
 
     Write-Log "n8n update routine completed successfully."
