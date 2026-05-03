@@ -72,7 +72,8 @@ $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoi
 Unregister-ScheduledTask -TaskName $taskName -Confirm:$false -ErrorAction SilentlyContinue
 
 # Register new task
-Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Principal $principal -Settings $settings | Out-Null
+$taskDescription = "n8n Auto-Updater: Automatically runs daily at 4:00 AM to safely export workflows, pull the latest stable n8n Docker image, restart the container if an update is found, and prune old images to save disk space. Logs are kept in the n8n installation directory."
+Register-ScheduledTask -TaskName $taskName -Description $taskDescription -Action $action -Trigger $trigger -Principal $principal -Settings $settings | Out-Null
 
 Write-Host ""
 Write-Host "--- Installation Successful! ---" -ForegroundColor Green
