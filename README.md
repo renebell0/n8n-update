@@ -53,6 +53,7 @@ curl -fsSL https://raw.githubusercontent.com/renebell0/n8n-update/main/install.s
 
 ## Maintenance
 
+- **Updating the Updater:** To update this tool to the newest version, simply run the installation command again: `npx n8n-update@latest`.
 - **Logs:** Check activity at `./logs/update-n8n.log`.
 - **Manual Execution:** Run `./update-n8n.sh` or `.\update-n8n.ps1` anytime.
 
