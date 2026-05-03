@@ -52,14 +52,21 @@ write_log "Old backups cleaned (retention: 7 days)."
 write_log "Pulling latest n8n image..."
 if docker compose -f "$COMPOSE_FILE" pull n8n >> "$LOG_FILE" 2>&1; then
     # 4. RESTART: Recreate container if image changed
-    write_log "Restarting n8n container if needed..."
-    if docker compose -f "$COMPOSE_FILE" up -d n8n >> "$LOG_FILE" 2>&1; then
+    write_log "Applying updates to n8n container if needed..."
+    if UP_OUTPUT=$(docker compose -f "$COMPOSE_FILE" up -d n8n 2>&1); then
+        if echo "$UP_OUTPUT" | grep -qE "Started|Recreated"; then
+            write_log "SUCCESS: n8n was updated to a newer version and restarted."
+        else
+            write_log "INFO: n8n is already up-to-date (no restart was necessary)."
+        fi
+        
         # 5. MAINTENANCE: Prune images
         docker image prune -f &> /dev/null
         write_log "Old docker images pruned."
         write_log "n8n update routine completed successfully."
     else
         write_log "ERROR: Failed to restart n8n container."
+        write_log "$UP_OUTPUT"
         exit 1
     fi
 else

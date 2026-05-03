@@ -77,8 +77,17 @@ try {
     Invoke-NativeCommand { & $dockerExe compose -f $composeFile pull n8n 2>$null }
 
     # 4. RESTART: Recreate container if image changed
-    Write-Log "Restarting n8n container if needed..."
-    Invoke-NativeCommand { & $dockerExe compose -f $composeFile up -d n8n 2>$null }
+    Write-Log "Applying updates to n8n container if needed..."
+    $upOutput = ""
+    Invoke-NativeCommand { 
+        $upOutput = & $dockerExe compose -f $composeFile up -d n8n 2>&1 | Out-String 
+    }
+    
+    if ($upOutput -match "Started" -or $upOutput -match "Recreated") {
+        Write-Log "SUCCESS: n8n was updated to a newer version and restarted."
+    } else {
+        Write-Log "INFO: n8n is already up-to-date (no restart was necessary)."
+    }
 
     # 5. MAINTENANCE: Prune images
     Invoke-NativeCommand { & $dockerExe image prune -f 2>$null }
