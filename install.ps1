@@ -27,9 +27,22 @@ if (-not $dockerExe) {
 
 # 3. Dependency Check: n8n (docker-compose.yml)
 if (-not (Test-Path "docker-compose.yml")) {
-    Write-Host "ERROR: 'docker-compose.yml' not found in the current directory." -ForegroundColor Red
-    Write-Host "Please run this installer inside your n8n installation folder."
-    exit 1
+    Write-Host "WARNING: 'docker-compose.yml' not found in the current directory." -ForegroundColor Yellow
+    $userPath = Read-Host "Enter the absolute path to your n8n installation folder (where docker-compose.yml is located)"
+    
+    if (-not (Test-Path $userPath)) {
+        Write-Host "ERROR: The specified path does not exist." -ForegroundColor Red
+        exit 1
+    }
+    
+    if (-not (Test-Path (Join-Path $userPath "docker-compose.yml"))) {
+        Write-Host "ERROR: 'docker-compose.yml' not found in the specified directory." -ForegroundColor Red
+        exit 1
+    }
+    
+    Set-Location -Path $userPath
+    $currentDir = Get-Location
+    Write-Host "Changed working directory to: $currentDir" -ForegroundColor Green
 }
 
 # 4. Download update script

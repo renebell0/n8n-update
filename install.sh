@@ -15,9 +15,22 @@ fi
 
 # 2. Dependency Check: n8n (docker-compose.yml)
 if [ ! -f "docker-compose.yml" ]; then
-    echo "ERROR: 'docker-compose.yml' not found in the current directory."
-    echo "Please run this installer inside your n8n installation folder."
-    exit 1
+    echo "WARNING: 'docker-compose.yml' not found in the current directory."
+    read -p "Enter the absolute path to your n8n installation folder (where docker-compose.yml is located): " USER_PATH
+    
+    if [ ! -d "$USER_PATH" ]; then
+        echo "ERROR: The specified path does not exist."
+        exit 1
+    fi
+    
+    if [ ! -f "$USER_PATH/docker-compose.yml" ]; then
+        echo "ERROR: 'docker-compose.yml' not found in the specified directory."
+        exit 1
+    fi
+    
+    cd "$USER_PATH" || exit 1
+    CURRENT_DIR="$(pwd)"
+    echo "Changed working directory to: $CURRENT_DIR"
 fi
 
 # 3. Download update script
