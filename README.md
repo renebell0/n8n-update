@@ -1,8 +1,38 @@
-# n8n-update: Cross-Platform Auto-Updater (Docker)
+<div align="center">
+  <!-- You can replace this logo with a custom one if you have it -->
+  <img src="https://raw.githubusercontent.com/n8n-io/n8n/master/assets/n8n-logo.png" alt="n8n logo" width="180" />
+  
+  <h1>🚀 n8n-update</h1>
+  
+  <p><b>Management, automation, and continuous deployment for n8n environments</b></p>
+  <p>Developed and maintained by <b>René Bello</b></p>
+  
+  <br />
 
-[![npm version](https://img.shields.io/npm/v/n8n-update.svg)](https://www.npmjs.com/package/n8n-update)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![SLSA Provenance](https://img.shields.io/badge/SLSA-Level%203-blue)](https://slsa.dev)
+  <!-- Dynamic Badges -->
+  <p>
+    <!-- NPM Publication Status -->
+    <a href="https://www.npmjs.com/package/n8n-update">
+      <img src="https://img.shields.io/npm/v/n8n-update?color=cb3837&style=for-the-badge&logo=npm&logoColor=white" alt="NPM Version" />
+    </a>
+    <!-- GitHub Actions CI/CD Status -->
+    <a href="https://github.com/renebell0/n8n-update/actions">
+      <img src="https://img.shields.io/github/actions/workflow/status/renebell0/n8n-update/publish.yml?style=for-the-badge&logo=github-actions&logoColor=white" alt="GitHub Actions Status" />
+    </a>
+    <!-- Execution Environment -->
+    <a href="https://nodejs.org/">
+      <img src="https://img.shields.io/badge/Node.js-%3E%3D18-43853d?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js Version" />
+    </a>
+    <!-- License -->
+    <a href="https://github.com/renebell0/n8n-update/blob/main/LICENSE">
+      <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="License MIT" />
+    </a>
+  </p>
+</div>
+
+<br/>
+
+> **Note:** `n8n-update` is a utility designed to optimize workflows and the maintenance of n8n instances, ensuring secure and efficient integrations.
 
 A professional, cross-platform automated solution to keep your **n8n** instance updated on **Windows, Linux, and macOS** using Docker.
 
