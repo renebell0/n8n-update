@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run ShellCheck
-        uses: ludeeus/action-shellcheck@master
+        uses: ludeeus/action-shellcheck@2.0.0
         continue-on-error: true # Don't block release on style warnings
       - name: Run PSScriptAnalyzer
         uses: microsoft/psscriptanalyzer-action@v1.1
@@ -27,14 +27,15 @@ jobs:
   publish-npm:
     needs: lint
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
-          registry-url: 'https://registry.npmjs.org'
-      # Trusted Publishing doesn't need NPM_TOKEN secret. 
-      # npm will use the OIDC token provided by GitHub.
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org/'
       - run: npm publish --provenance --access public
 
   github-release:
@@ -43,7 +44,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             install.ps1
