@@ -1,6 +1,6 @@
 $ErrorActionPreference = "Stop"
 
-$repoUrl = "https://raw.githubusercontent.com/renebell0/n8n-windows-auto-updater/main"
+$repoUrl = "https://raw.githubusercontent.com/renebell0/n8n-update/main"
 $targetScript = "update-n8n.ps1"
 $currentDir = Get-Location
 
