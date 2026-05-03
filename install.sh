@@ -1,8 +1,9 @@
 #!/bin/bash
 
-REPO_URL="https://raw.githubusercontent.com/renebell0/n8n-update/main"
 TARGET_SCRIPT="update-n8n.sh"
 CURRENT_DIR="$(pwd)"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+SOURCE_SCRIPT="$SCRIPT_DIR/$TARGET_SCRIPT"
 
 echo "--- n8n Auto-Updater Installer (Linux/macOS) ---"
 
@@ -33,10 +34,10 @@ if [ ! -f "docker-compose.yml" ]; then
     echo "Changed working directory to: $CURRENT_DIR"
 fi
 
-# 3. Download update script
-echo "Downloading $TARGET_SCRIPT..."
-if ! curl -fsSL "$REPO_URL/$TARGET_SCRIPT" -o "$CURRENT_DIR/$TARGET_SCRIPT"; then
-    echo "ERROR: Could not download $TARGET_SCRIPT from GitHub."
+# 3. Copy update script from the npm package to the installation directory
+echo "Copying $TARGET_SCRIPT..."
+if ! cp "$SOURCE_SCRIPT" "$CURRENT_DIR/$TARGET_SCRIPT"; then
+    echo "ERROR: Could not copy $TARGET_SCRIPT."
     exit 1
 fi
 

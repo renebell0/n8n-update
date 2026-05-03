@@ -2,20 +2,22 @@
 
 const { execSync } = require('child_process');
 const os = require('os');
-
-const REPO_USER = 'renebell0'; // CHANGE THIS AFTER CREATING REPO
-const RAW_URL = `https://raw.githubusercontent.com/${REPO_USER}/n8n-update/main`;
+const path = require('path');
 
 console.log('--- n8n-update: Cross-Platform Installer ---');
+
+const packageRoot = path.join(__dirname, '..');
 
 try {
   if (os.platform() === 'win32') {
     console.log('Detected Windows. Launching PowerShell installer...');
-    const psCommand = `powershell -NoProfile -ExecutionPolicy Bypass -Command "irm ${RAW_URL}/install.ps1 | iex"`;
+    const installScript = path.join(packageRoot, 'install.ps1');
+    const psCommand = `powershell -NoProfile -ExecutionPolicy Bypass -File "${installScript}"`;
     execSync(psCommand, { stdio: 'inherit' });
   } else {
     console.log('Detected Linux/macOS. Launching Bash installer...');
-    const shCommand = `bash -c "$(curl -fsSL ${RAW_URL}/install.sh)"`;
+    const installScript = path.join(packageRoot, 'install.sh');
+    const shCommand = `bash "${installScript}"`;
     execSync(shCommand, { stdio: 'inherit' });
   }
 } catch (error) {

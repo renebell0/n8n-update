@@ -1,6 +1,5 @@
 $ErrorActionPreference = "Stop"
 
-$repoUrl = "https://raw.githubusercontent.com/renebell0/n8n-update/main"
 $targetScript = "update-n8n.ps1"
 $currentDir = Get-Location
 
@@ -45,12 +44,13 @@ if (-not (Test-Path "docker-compose.yml")) {
     Write-Host "Changed working directory to: $currentDir" -ForegroundColor Green
 }
 
-# 4. Download update script
-Write-Host "Downloading $targetScript..." -ForegroundColor Yellow
+# 4. Copy update script from the npm package to the installation directory
+Write-Host "Copying $targetScript..." -ForegroundColor Yellow
 try {
-    Invoke-WebRequest -Uri "$repoUrl/$targetScript" -OutFile "$currentDir\$targetScript" -UseBasicParsing
+    $sourceScript = Join-Path $PSScriptRoot $targetScript
+    Copy-Item -Path $sourceScript -Destination "$currentDir\$targetScript" -Force
 } catch {
-    Write-Host "ERROR: Could not download $targetScript from GitHub." -ForegroundColor Red
+    Write-Host "ERROR: Could not copy $targetScript." -ForegroundColor Red
     exit 1
 }
 
