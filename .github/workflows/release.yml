@@ -33,4 +33,6 @@ jobs:
         with:
           node-version: '22'
           registry-url: 'https://registry.npmjs.org'
-      - run: npm publish --provenance --access public
+      - name: Debug package.json
+        run: cat package.json
+      - run: npm publish --provenance

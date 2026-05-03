@@ -25,6 +25,10 @@
   ],
   "author": "VIRS",
   "license": "MIT",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
   "bugs": {
     "url": "https://github.com/renebell0/n8n-update/issues"
   },
