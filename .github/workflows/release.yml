@@ -7,7 +7,7 @@ on:
 
 permissions:
   contents: write
-  id-token: write # Required for OIDC and SLSA Provenance
+  id-token: write
 
 jobs:
   lint:
@@ -19,9 +19,6 @@ jobs:
         continue-on-error: true
       - name: Run PSScriptAnalyzer
         uses: microsoft/psscriptanalyzer-action@v1.1
-        with:
-          path: .
-          recurse: true
         continue-on-error: true
 
   publish-npm:
@@ -35,20 +32,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-          registry-url: 'https://registry.npmjs.org/'
+          registry-url: 'https://registry.npmjs.org'
       - run: npm publish --provenance --access public
-
-  github-release:
-    needs: publish-npm
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            install.ps1
-            install.sh
-            update-n8n.ps1
-            update-n8n.sh
-          generate_release_notes: true
