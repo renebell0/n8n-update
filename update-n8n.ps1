@@ -29,10 +29,11 @@ function Invoke-NativeCommand {
     $oldAction = $ErrorActionPreference
     $ErrorActionPreference = "Continue"
     try {
-        & $Command
+        $output = & $Command 2>&1 | Out-String
         if ($LASTEXITCODE -ne 0) {
-            throw "Native command failed with exit code $LASTEXITCODE"
+            throw "Native command failed with exit code $LASTEXITCODE. Output: $output"
         }
+        return $output
     } finally {
         $ErrorActionPreference = $oldAction
     }
@@ -61,8 +62,8 @@ try {
     # Try to export, but don't fail the whole update if export fails (e.g. n8n is down)
     try {
         Write-Host "Exporting workflows..."
-        Invoke-NativeCommand { & $dockerExe exec n8n n8n export:workflow --all --output=/home/node/last_backup.json 2>$null }
-        Invoke-NativeCommand { & $dockerExe cp "n8n:/home/node/last_backup.json" "$backupFile" 2>$null }
+        Invoke-NativeCommand { & $dockerExe exec n8n n8n export:workflow --all --output=/home/node/last_backup.json } | Out-Null
+        Invoke-NativeCommand { & $dockerExe cp "n8n:/home/node/last_backup.json" "$backupFile" } | Out-Null
         Write-Log "Backup created: $backupFile"
     } catch {
         Write-Log "Warning: Failed to create workflow backup. Proceeding with update anyway. Error: $($_.Exception.Message)"
@@ -74,14 +75,11 @@ try {
 
     # 3. UPDATE: Pull image
     Write-Log "Pulling latest n8n image..."
-    Invoke-NativeCommand { & $dockerExe compose -f $composeFile pull n8n 2>$null }
+    Invoke-NativeCommand { & $dockerExe compose -f $composeFile pull n8n } | Out-Null
 
     # 4. RESTART: Recreate container if image changed
     Write-Log "Applying updates to n8n container if needed..."
-    $upOutput = ""
-    Invoke-NativeCommand { 
-        $upOutput = & $dockerExe compose -f $composeFile up -d n8n 2>&1 | Out-String 
-    }
+    $upOutput = Invoke-NativeCommand { & $dockerExe compose -f $composeFile up -d n8n }
     
     if ($upOutput -match "Started" -or $upOutput -match "Recreated") {
         Write-Log "SUCCESS: n8n was updated to a newer version and restarted."
@@ -90,7 +88,7 @@ try {
     }
 
     # 5. MAINTENANCE: Prune images
-    Invoke-NativeCommand { & $dockerExe image prune -f 2>$null }
+    Invoke-NativeCommand { & $dockerExe image prune -f } | Out-Null
     Write-Log "Old docker images pruned."
 
     Write-Log "n8n update routine completed successfully."

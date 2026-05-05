@@ -1,4 +1,10 @@
+param([string]$PackageRoot)
+
 $ErrorActionPreference = "Stop"
+
+if ([string]::IsNullOrWhiteSpace($PackageRoot)) {
+    $PackageRoot = $PSScriptRoot
+}
 
 $targetScript = "update-n8n.ps1"
 $currentDir = Get-Location
@@ -47,7 +53,7 @@ if (-not (Test-Path "docker-compose.yml")) {
 # 4. Copy update script from the npm package to the installation directory
 Write-Host "Copying $targetScript..." -ForegroundColor Yellow
 try {
-    $sourceScript = Join-Path $PSScriptRoot $targetScript
+    $sourceScript = Join-Path $PackageRoot $targetScript
     Copy-Item -Path $sourceScript -Destination "$currentDir\$targetScript" -Force
 } catch {
     Write-Host "ERROR: Could not copy $targetScript." -ForegroundColor Red

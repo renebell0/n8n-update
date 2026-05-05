@@ -1,9 +1,9 @@
 #!/bin/bash
 
+PACKAGE_ROOT="${1:-$(cd "$(dirname "$0")" && pwd)}"
 TARGET_SCRIPT="update-n8n.sh"
 CURRENT_DIR="$(pwd)"
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-SOURCE_SCRIPT="$SCRIPT_DIR/$TARGET_SCRIPT"
+SOURCE_SCRIPT="$PACKAGE_ROOT/$TARGET_SCRIPT"
 
 echo "--- n8n Auto-Updater Installer (Linux/macOS) ---"
 

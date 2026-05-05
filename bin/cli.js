@@ -12,12 +12,12 @@ try {
   if (os.platform() === 'win32') {
     console.log('Detected Windows. Launching PowerShell installer...');
     const installScript = path.join(packageRoot, 'install.ps1');
-    const psCommand = `powershell -NoProfile -ExecutionPolicy Bypass -File "${installScript}"`;
+    const psCommand = `powershell -NoProfile -ExecutionPolicy Bypass -File "${installScript}" "${packageRoot}"`;
     execSync(psCommand, { stdio: 'inherit' });
   } else {
     console.log('Detected Linux/macOS. Launching Bash installer...');
     const installScript = path.join(packageRoot, 'install.sh');
-    const shCommand = `bash "${installScript}"`;
+    const shCommand = `bash "${installScript}" "${packageRoot}"`;
     execSync(shCommand, { stdio: 'inherit' });
   }
 } catch (error) {

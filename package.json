@@ -1,6 +1,6 @@
 {
   "name": "n8n-update",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Professional cross-platform n8n Docker auto-updater with rolling backups and cleanup.",
   "main": "bin/cli.js",
   "bin": {
